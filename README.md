@@ -50,7 +50,7 @@ chmod +x ~/.local/bin/lapav
 
 # FAQs
 ## 1. Weird name
-    Hide in marathi(my native language) is called lapav :blush:
+    Hide in marathi(my native language) is called lapav
 ## 2. Will this work on XYZ Window manager
     Yes. If you have the Requirements then this will work.
 ## 3. When will todos be completed
