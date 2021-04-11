@@ -2,6 +2,7 @@
 
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 11)
 NC=$(tput sgr 0)
 
 delim=":"
@@ -29,6 +30,33 @@ pop() {
     mv $tmp $stack
 }
 
+usage() {
+
+## For Colored output looking into this
+## Black        0;30     Dark Gray     1;30
+## Red          0;31     Light Red     1;31
+## Green        0;32     Light Green   1;32
+## Brown/Orange 0;33     Yellow        1;33
+## Blue         0;34     Light Blue    1;34
+## Purple       0;35     Light Purple  1;35
+## Cyan         0;36     Light Cyan    1;36
+## Light Gray   0;37     White         1;37
+
+cat << EOF
+Usage:
+ $YELLOW $0 $GREEN [hide|show] [select]
+  $YELLOW Options:$NC
+    $GREEN hide:$NC Hide option will hide the window, if no arguement is provided
+            then current focused window will be hidden
+    $GREEN show:$NC This option will show the window. If no arguement is provided
+            then the last hidden window will be show
+  $YELLOW Args:$NC
+    $GREEN select:$NC This option will launch rofi or dmenu(which is installed)
+            and show the list of windows to perform operation
+            (like hide or show)
+EOF
+}
+
 case $1 in
     hide)
         if [ -z "$2" ]; then
@@ -45,8 +73,8 @@ case $1 in
             fi
         fi
         ;;
-    show)
 
+    show)
         die
         if [ -z "$2" ]; then
             # No arguement is provide to unhide last window
@@ -61,33 +89,11 @@ case $1 in
                 exit 1
             fi
         fi
-
         ;;
+
     *)
-        printf "$RED Please provide an argument!! $NC\n hide or show\n"
-        exit 1
+        # printf "$RED Please provide an argument!! $NC\n hide or show\n"
+        # exit 1
+        usage
         ;; # unknown arg
 esac
-
-## For Colored output looking into this
-## Black        0;30     Dark Gray     1;30
-## Red          0;31     Light Red     1;31
-## Green        0;32     Light Green   1;32
-## Brown/Orange 0;33     Yellow        1;33
-## Blue         0;34     Light Blue    1;34
-## Purple       0;35     Light Purple  1;35
-## Cyan         0;36     Light Cyan    1;36
-## Light Gray   0;37     White         1;37
-
-# then use tput. 1 means red, 2 means green ,etc
-## tput setaf 1; echo "this is red text"
-
-# usage() {
-# cat << EOF
-# Usage:
-#   $0 [-u [username]] [-p]
-#   Options:
-#     -u <username> : Optionally specify the new username to set password for.
-#     -p : Prompt for a new password.
-# EOF
-# }
