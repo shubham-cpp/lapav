@@ -6,16 +6,6 @@ I recently tried awesome wm and it has this neat feature of when click on window
 title it will hide the window. Really good feature and I wanted this on my bspwm setup too
 (To make work flow across WMs consistent). So I thought of writing a script which is WM agnostic
 
-# Example
-```sh
-lapav hide # if nothing is passed then it will hide the focused window
-
-lapav show # if nothing is passed then it will show the last hidden window
-
-lapav hide select # This will lauch rofi and let you select a window to hide
-lapav show select # This will lauch rofi and let you select a window to be shown
-```
-
 # Requirements
 - xdo
 - xdotool
@@ -38,6 +28,25 @@ curl https://raw.githubusercontent.com/shubham-cpp/lapav/main/lapav.sh > ~/.loca
 # Make sure ~/.local/bin is in your $PATH
 chmod +x ~/.local/bin/lapav
 ```
+# Example
+```sh
+lapav hide # if nothing is passed then it will hide the focused window
+
+lapav show # if nothing is passed then it will show the last hidden window
+
+lapav hide select # This will lauch rofi and let you select a window to hide
+lapav show select # This will lauch rofi and let you select a window to be shown
+```
+### For bspwm add this to your ~/.config/sxhkd/sxhkdrc
+```sh
+super + {_,shift + } h
+    lapav {hide,hide select}
+
+super + {_,shift + } s
+    lapav {show,show select}
+```
+### For other desktop
+You know better than me
 
 # Todos
 
