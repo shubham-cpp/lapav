@@ -19,13 +19,13 @@ push() {
     wid="$1"
     # Add window id only if it doesn't exist
     grep -qxF "$1" "$stack" || printf "%s:%s\n" "$wid" "$(xdotool getwindowname $wid)" >> $stack
-    xdotool windowunmap --sync "$wid"
+    xdotool windowminimize --sync "$wid"
 }
 
 pop() {
     tmp=$(mktemp)
     wid=$1
-    xdotool windowmap $wid || $(echo "$RED Failed $NC" && exit 1)
+    xdotool windowactivate $wid || $(echo "$RED Failed $NC" && exit 1)
     head -n-1 $stack > $tmp
     mv $tmp $stack
 }
