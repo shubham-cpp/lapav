@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
@@ -12,22 +12,27 @@ die(){
     [ ! -s $stack ] && notify-send "Empty File" "No window is hidden" && exit 1
 }
 
+failed(){
+    echo "$1"
+    exit 1
+}
+
 cmd=$([ -f /usr/bin/rofi ] && echo "rofi -dmenu -matching fuzzy" || echo "dmenu -i -l 10")
 
 push() {
     [ -z "$1" ] && exit 1
     wid="$1"
     # Add window id only if it doesn't exist
-    grep -qxF "$1" "$stack" || printf "%s:%s\n" "$wid" "$(xdotool getwindowname $wid)" >> $stack
+    grep -qxF "$1" "$stack" || printf "%s%s%s\n" "$wid" "$delim" "$(xdotool getwindowname $wid)" >> "$stack"
     xdotool windowminimize --sync "$wid"
 }
 
 pop() {
     tmp=$(mktemp)
     wid=$1
-    xdotool windowactivate $wid || $(echo "$RED Failed $NC" && exit 1)
-    head -n-1 $stack > $tmp
-    mv $tmp $stack
+    xdotool windowactivate "$wid" || failed "$RED Failed $NC"
+    head -n-1 "$stack" > "$tmp"
+    mv "$tmp" "$stack"
 }
 
 usage() {
@@ -65,10 +70,10 @@ case $1 in
         else
             if [ "$2" = "select" ]; then
                 win_names=$(xdo id -d | xargs -r -I{} sh -c 'printf "%s:%s\n" {} "$(xdotool getwindowname {})"')
-                wid=$(echo "$win_names" | eval "$cmd" | cut -d':' -f1)
+                wid=$(echo "$win_names" | eval "$cmd" | cut -d "$delim" -f1)
                 push "$wid"
             else
-                printf "$RED please provide right arguements.\n$NC Did you mean$GREEN select $NC \n"
+                printf "%s Please provide right arguements.\n%s Did you mean%s select \n%s" "$RED" "$NC" "$GREEN" "$NC"
                 exit 1
             fi
         fi
@@ -76,24 +81,21 @@ case $1 in
 
     show)
         die
+
         if [ -z "$2" ]; then
             # No arguement is provide to unhide last window
-            wid=$(tail < $stack -n1 | cut -d':' -f1)
-            pop $wid
+            wid=$(tail < $stack -n1 | cut -d "$delim" -f1)
+            pop "$wid"
         else
             if [ "$2" = "select" ]; then
-                wid=$(cat $stack | eval "$cmd" | cut -d':' -f1)
+                wid=$( eval "$cmd" < "$stack" | cut -d "$delim" -f1)
                 pop "$wid"
             else
-                printf "$RED please provide right arguements.\n$NC Did you mean$GREEN select $NC \n"
+                printf "%s Please provide right arguements.\n%s Did you mean%s select \n%s" "$RED" "$NC" "$GREEN" "$NC"
                 exit 1
             fi
         fi
         ;;
 
-    *)
-        # printf "$RED Please provide an argument!! $NC\n hide or show\n"
-        # exit 1
-        usage
-        ;; # unknown arg
+    *) usage ;;
 esac
