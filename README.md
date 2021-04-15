@@ -7,9 +7,9 @@ title it will hide the window. Really good feature and I wanted this on my bspwm
 (To make work flow across WMs consistent). So I thought of writing a script which is WM agnostic
 
 # Requirements
-- xdo
-- xdotool
-- rofi or dmenu
+- [xdo](https://github.com/baskerville/xdo)
+- [xdotool](https://www.semicomplete.com/projects/xdotool/)
+- [rofi](https://github.com/davatorium/rofi) or [dmenu](https://tools.suckless.org/dmenu/)
 
 ```sh
 # For debian based distro
@@ -34,8 +34,9 @@ lapav hide # if nothing is passed then it will hide the focused window
 
 lapav show # if nothing is passed then it will show the last hidden window
 
-lapav hide select # This will lauch rofi and let you select a window to hide
-lapav show select # This will lauch rofi and let you select a window to be shown
+lapav hide select # this will lauch rofi and let you select a window to hide
+lapav show select # this will lauch rofi and let you select a window to be shown
+
 ```
 ### For bspwm add this to your ~/.config/sxhkd/sxhkdrc
 ```sh
@@ -45,13 +46,13 @@ super + {_,shift + } h
 super + {_,shift + } s
     lapav {show,show select}
 ```
-### For other desktop
+### For other WMs
 You know better than me
 
 # Todos
 
-- [ ] Make this posix compliant
-- [ ] Optimize the Script
+- [x] Make this posix compliant
+- [x] Remove [shellcheck](https://github.com/koalaman/shellcheck) warnings
 - [ ] Maybe rewrite in a programming lang like C or Go to eliminate xdo and xdotool dependency
 - [ ] xdotool man page has an option of selectwindow which provide a functionality to select a window via mouse click. Interesting
 - [ ] Add A video example
@@ -63,4 +64,4 @@ You know better than me
 ## 2. Will this work on XYZ Window manager
     Yes. If you have the Requirements then this will work.
 ## 3. When will todos be completed
-    My exams start from Friday so really cant say anything concrete
+    My exams start from Friday(16th Apr '21) so really cant say anything concrete
